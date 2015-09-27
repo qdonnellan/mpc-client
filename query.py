@@ -4,8 +4,7 @@ from models.asteroid import Asteroid
 
 
 class Query(object):
-    """Query client the Minor Planet Center web service
-    """
+    """Query client the Minor Planet Center web service"""
 
     def __init__(self):
         """Initialize a query with the default parameters"""
