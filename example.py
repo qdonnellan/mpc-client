@@ -3,6 +3,7 @@ from query import Query
 
 
 q = Query()
-q.limit(10)
+q.limit(100)
 for x in q:
-    print x.name, x.orbit.updated
+    print x.orbit.orbit_type
+
