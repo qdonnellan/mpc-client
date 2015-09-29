@@ -89,6 +89,8 @@ class Quantity(object):
         return valid_units.get(self._units, None)
 
 
+# TODO: I could probably just remove this and have a units=None default
+# above...
 class UnitlessQuantity(object):
     """Returns a simple Decimal representation of a number"""
 

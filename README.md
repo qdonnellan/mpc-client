@@ -44,23 +44,26 @@ q = Query()
 q.filter(eccentricity_max=0.95).filter(eccentricity_min=0.1).filter(orbit_min=100)
 ```
 
-### Query only runs when you are ready
+### Query only runs when needed
 
 The query of the actual mpc_service is only run when you access the query. You can either run the query explicitly:
 
+```
 q = Query()
 q.filter(eccentricity_max=0.95)
 results = q.run()
+```
 
 In the above example, the query is executed when you call `q.run()`. 
 
 Alternatively, you build a query and then implicitly force it to run when you attempt to iterate through the results. For example:
 
-
+```
 q = Query()
 q.filter(eccentricity_max=0.95)
 for result in q:
     # do something
+```
 
 This query is actually run when you call `for result in q` since the results are needed to iterate through the for loop. 
 
