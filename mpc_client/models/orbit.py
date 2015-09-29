@@ -1,5 +1,6 @@
 from astropy.time import Time
-from models.mpc_object import MpcObject
+from astropy import units
+from mpc_client.models.mpc_object import MpcObject
 
 
 class Orbit(MpcObject):
@@ -33,7 +34,7 @@ class Orbit(MpcObject):
             Decimal number of years of period, or None if the data is not a
             valid number
         """
-        return self._get_as_decimal('period')
+        return self._get_as_decimal('period') * units.yr
 
     @property
     def semimajor_axis(self):
@@ -42,7 +43,7 @@ class Orbit(MpcObject):
         Returns:
             Decimal, the length of the semimajor axis in Astronomical Units
         """
-        return self._get_as_decimal('semimajor_axis')
+        return self._get_as_decimal('semimajor_axis') * units.AU
 
     @property
     def aphelion_distance(self):

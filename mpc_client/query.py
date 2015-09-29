@@ -1,6 +1,10 @@
+"""query.py - a query client used to access the mpc_client API
+"""
+
+
 import requests
-import settings
-from models.asteroid import Asteroid
+from mpc_client import settings
+from mpc_client.models.asteroid import Asteroid
 
 
 class Query(object):

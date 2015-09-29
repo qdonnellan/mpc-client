@@ -1,5 +1,5 @@
-from models.orbit import Orbit
-from models.mpc_object import MpcObject
+from mpc_client.models.orbit import Orbit
+from mpc_client.models.mpc_object import MpcObject
 
 
 class Asteroid(MpcObject):

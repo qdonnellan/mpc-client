@@ -1,5 +1,5 @@
 import unittest
-from models.asteroid import Asteroid
+from mpc_client.models.asteroid import Asteroid
 from decimal import Decimal
 
 
