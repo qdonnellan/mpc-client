@@ -21,14 +21,14 @@ for asteroid in q:
 ```
 
 ### Filters
-Filters can be applied all at once, one at a time, or chained together
+Filters can be applied all at once...
 
 ```
 q = Query()
 q.filter(eccentricity_max=0.95, eccentricity_min=0.1, orbit_min=100)
 ```
 
-(same as)
+one at a time...
 
 ```
 q = Query()
@@ -37,7 +37,7 @@ q.filter(eccentricity_min=0.1)
 q.filter(orbit_min=100)
 ```
 
-(same as)
+or chained together...
 
 ```
 q = Query()
@@ -66,6 +66,8 @@ for result in q:
 ```
 
 This query is actually run when you call `for result in q` since the results are needed to iterate through the for loop. 
+
+### Resulting Quantities are unit-aware
 
 
 

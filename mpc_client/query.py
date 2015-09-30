@@ -3,8 +3,10 @@
 
 
 import requests
-from mpc_client import settings
-from mpc_client.models.asteroid import Asteroid
+from . import settings
+from .models import Asteroid
+import os
+import json
 
 
 class Query(object):
@@ -61,6 +63,20 @@ class Query(object):
         """
         self._results = self._request_data().json()
         return self._results
+
+    def save_to_file(self, filename):
+        """Save the current query results to a file, for use later"""
+        filepath = os.path.join(settings.STORAGE_DIR, filename)
+        if not self._results:
+            self.run()
+        with open(filepath, 'w+') as outfile:
+            json.dump(self._results, outfile, indent=4)
+
+    def load_from_file(self, filename):
+        """Load a previously saved results query from a file"""
+        filepath = os.path.join(settings.STORAGE_DIR, filename)
+        with open(filepath, 'r') as infile:
+            self._results = json.load(infile)
 
     def _request_data(self):
         """Request data from the web service, return response

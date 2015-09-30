@@ -1,7 +1,4 @@
-from mpc_client.properties import (
-    Time, Quantity, UnitlessQuantity, BooleanFlag
-)
-from astropy import units
+from .properties import Time, Quantity, BooleanFlag
 
 
 class Asteroid(object):
@@ -11,9 +8,14 @@ class Asteroid(object):
         self.name = data.get('name', None)
         self.number = data.get('number', None)
         self.designation = data.get('designation', None)
-        self.absolute_magnitude = UnitlessQuantity(
-            data, 'absolute_magnitude')
+        self.absolute_magnitude = Quantity(data, 'absolute_magnitude')
+        self.albedo = Quantity(data, 'albedo')
+        self.albedo_uncertainty = Quantity(data, 'albedo_unc')
+        self.diameter = Quantity(data, 'diameter', 'km')
+        self.diameter_uncertainty = Quantity(data, 'diameter_unc', 'km')
+        self.binary = data.get('binary', None)
         self.orbit = Orbit(data)
+        self.neowise = Neowise(data)
 
 
 class Orbit(object):
@@ -25,7 +27,6 @@ class Orbit(object):
         Args:
             data: the parent Asteroid object data
         """
-        self.updated = Time(data, 'orbit_updated_at', 'isot')
         self.epoch = Time(data, 'epoch_jd', 'jd')
         self.period = Quantity(data, 'period', 'yr')
         self.semimajor_axis = Quantity(data, 'semimajor_axis', 'AU')
@@ -36,15 +37,15 @@ class Orbit(object):
             data, 'argument_of_perihelion', 'deg')
         self.ascending_node = Quantity(data, 'ascending_node', 'deg')
         self.inclination = Quantity(data, 'inclination', 'deg')
-        self.eccentricity = UnitlessQuantity(data, 'eccentricity')
+        self.eccentricity = Quantity(data, 'eccentricity')
         self.mean_anomoly = Quantity(data, 'mean_anomoly', 'deg')
         self.mean_daily_motion = Quantity(
             data, 'mean_daily_motion', 'deg/day')
-        self.phase_slope = UnitlessQuantity(data, 'phase_slope')
+        self.phase_slope = Quantity(data, 'phase_slope')
         self.type_id = data.get('orbit_type', None)
         self.type = self._get_orbit_type(self.type_id)
         self.delta_v = Quantity(data, 'delta_v', 'km/sec')
-        self.tisserand_jupiter = UnitlessQuantity(data, 'tisserand_jupiter')
+        self.tisserand_jupiter = Quantity(data, 'tisserand_jupiter')
         self.neo = BooleanFlag(data, 'neo')
         self.km_neo = BooleanFlag(data, 'km_neo')
         self.pha = BooleanFlag(data, 'pha')
@@ -85,3 +86,21 @@ class MoidCollection(object):
         self.saturn = Quantity(data, 'saturn_moid', 'AU')
         self.uranus = Quantity(data, 'uranus_moid', 'AU')
         self.neptune = Quantity(data, 'neptune_moid', 'AU')
+
+
+class Neowise(object):
+    """A collection of calculations from the NEOWISE team"""
+
+    def __init__(self, data):
+        """Initialize the neowise collection object
+
+        Args:
+            data: a dictionary containing all asteroid data
+        """
+        self.absolute_magnitude = Quantity(data, 'h_neowise')
+        self.phase_slope = Quantity(data, 'g_neowise')
+        self.albedo = Quantity(data, 'albedo_neowise')
+        self.albedo_uncertainty = Quantity(data, 'albedo_neowise_unc')
+        self.diameter = Quantity(data, 'diameter_neowise', 'km')
+        self.diameter_uncertainty = Quantity(
+            data, 'diameter_neowise_unc', 'km')

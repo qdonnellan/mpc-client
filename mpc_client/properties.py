@@ -22,8 +22,9 @@ class Time(object):
         self._time_format = time_format
 
     def __get__(self, instance, owner):
-        """Only when the value of the instance is requested do we attempt to
-        calculate the time object
+        """Only when the value of the instance is requested is the time object
+        created. After it is created it is saved to self.value so that it does
+        not have to be calculated again.
 
         Returns:
             an astropy.Time object
@@ -33,8 +34,8 @@ class Time(object):
         return self.value
 
     def _create_time(self):
-        """Create an astropy.Time object from the _raw_value saved to this
-        instance
+        """Create an astropy.Time object from the raw value and time format
+        saved to the instance.
 
         Returns:
             an astropy.Time object
@@ -45,7 +46,7 @@ class Time(object):
 class Quantity(object):
     """A Quantity property - something with value an units"""
 
-    def __init__(self, data, key, units):
+    def __init__(self, data, key, units=None):
         """Initialize the Quantity property instance by saving the raw value
         of data[key] to this instance. We will calculate the actual Quantity
         only on demand
@@ -74,7 +75,10 @@ class Quantity(object):
             the known values
         """
         try:
-            return Decimal(self._raw_value) * self._get_astropy_units()
+            if self._units:
+                return Decimal(self._raw_value) * self._get_astropy_units()
+            else:
+                return Decimal(self._raw_value)
         except InvalidOperation:
             return None
 
@@ -83,45 +87,11 @@ class Quantity(object):
         valid_units = {
             'yr': astropy.units.yr,
             'AU': astropy.units.AU,
+            'km': astropy.units.km,
             'deg': astropy.units.deg,
             'deg/day': astropy.units.deg / astropy.units.d
         }
         return valid_units.get(self._units, None)
-
-
-# TODO: I could probably just remove this and have a units=None default
-# above...
-class UnitlessQuantity(object):
-    """Returns a simple Decimal representation of a number"""
-
-    def __init__(self, data, key):
-        """Initialize the Quantity property instance by saving the raw value
-        of data[key] to this instance. We will calculate the actual Decimal
-        only on demand
-
-        Args:
-            data: a dictionary containing many keys including the expected key
-            key: a string key expected to exist in data
-        """
-        self.value = None
-        self._raw_value = data.get(key, None)
-
-    def __get__(self, instance, owner):
-        if not self.value:
-            self.value = self._create_quantity()
-        return self.value
-
-    def _create_quantity(self):
-        """Create a Decimal instnace from the known raw value
-
-        Returns:
-            a Decimal object or None if it cannot be created from the known
-            values
-        """
-        try:
-            return Decimal(self._raw_value)
-        except InvalidOperation:
-            return None
 
 
 class BooleanFlag(object):

@@ -14,3 +14,6 @@ WEB_SERVICE_URL = 'http://mpc.cfa.harvard.edu/ws/search'
 # the astropy website for list of available time formats:
 # http://docs.astropy.org/en/stable/time/index.html#time-format
 DEFAULT_TIME_FORMAT = 'datetime'
+
+
+STORAGE_DIR = '/home/quentin/mpc_results/'
