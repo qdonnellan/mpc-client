@@ -68,6 +68,8 @@ for result in q:
 This query is actually run when you call `for result in q` since the results are needed to iterate through the for loop. 
 
 ### Resulting Quantities are unit-aware
+Quantities are `astropy`-Quantities and have been tagged with the appropriate units. 
+
 
 
 
