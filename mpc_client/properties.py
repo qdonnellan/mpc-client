@@ -1,4 +1,5 @@
-import astropy
+from astropy.time import Time
+from astropy import units as u
 from decimal import Decimal, InvalidOperation
 
 class Time(object):
@@ -40,7 +41,7 @@ class Time(object):
         Returns:
             an astropy.Time object
         """
-        return astropy.time.Time(self._raw_value, format=self._time_format)
+        return Time(self._raw_value, format=self._time_format)
 
 
 class Quantity(object):
@@ -79,17 +80,17 @@ class Quantity(object):
                 return Decimal(self._raw_value) * self._get_astropy_units()
             else:
                 return Decimal(self._raw_value)
-        except InvalidOperation:
+        except (InvalidOperation, TypeError):
             return None
 
     def _get_astropy_units(self):
         """Return the appropriate astropy units object"""
         valid_units = {
-            'yr': astropy.units.yr,
-            'AU': astropy.units.AU,
-            'km': astropy.units.km,
-            'deg': astropy.units.deg,
-            'deg/day': astropy.units.deg / astropy.units.d
+            'yr': u.yr,
+            'AU': u.AU,
+            'km': u.km,
+            'deg': u.deg,
+            'deg/day': u.deg / u.d
         }
         return valid_units.get(self._units, None)
 

@@ -1,7 +1,15 @@
 from .properties import Time, Quantity, BooleanFlag
 
 
-class Asteroid(object):
+class BaseMpcObject(object):
+    def __getattribute__(self, attr):
+        obj = object.__getattribute__(self, attr)
+        if hasattr(obj, '__get__'):
+            return obj.__get__(self, type(self))
+        return obj
+
+
+class Asteroid(BaseMpcObject):
     """The asteroid object"""
 
     def __init__(self, data):
@@ -13,12 +21,12 @@ class Asteroid(object):
         self.albedo_uncertainty = Quantity(data, 'albedo_unc')
         self.diameter = Quantity(data, 'diameter', 'km')
         self.diameter_uncertainty = Quantity(data, 'diameter_unc', 'km')
-        self.binary = data.get('binary', None)
+        self.binary = data.get('binary_object', None)
         self.orbit = Orbit(data)
         self.neowise = Neowise(data)
 
 
-class Orbit(object):
+class Orbit(BaseMpcObject):
     """The orbit object, belonging to a asteroid"""
 
     def __init__(self, data):
@@ -51,8 +59,8 @@ class Orbit(object):
         self.pha = BooleanFlag(data, 'pha')
         self.moid = MoidCollection(data)
 
-    @staticmethod
-    def _get_orbit_type(type_id):
+    @classmethod
+    def _get_orbit_type(cls, type_id):
         """Return the named orbit type"""
         return {
             0: "Unclassified",
@@ -69,7 +77,7 @@ class Orbit(object):
         }.get(type_id, None)
 
 
-class MoidCollection(object):
+class MoidCollection(BaseMpcObject):
     """Minimum Orbit Intersection Distances collection"""
 
     def __init__(self, data):
@@ -88,7 +96,7 @@ class MoidCollection(object):
         self.neptune = Quantity(data, 'neptune_moid', 'AU')
 
 
-class Neowise(object):
+class Neowise(BaseMpcObject):
     """A collection of calculations from the NEOWISE team"""
 
     def __init__(self, data):

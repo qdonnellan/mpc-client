@@ -26,7 +26,7 @@ class Query(object):
         """
         if not self._results:
             self.run()
-        return (Asteroid(x) for x in self._results)
+        return self.all()
 
     def limit(self, number_of_results):
         """Add a limit parameter to this query
@@ -59,10 +59,30 @@ class Query(object):
         """Run this Query and save the results in _results
 
         Returns:
-            a list, the result of running this query
+            this Query object
         """
         self._results = self._request_data().json()
-        return self._results
+        return self
+
+    def all(self):
+        """Return the results as a collection of Asteroid objects
+
+        Returns:
+            a list of Asteroid objects
+        """
+        return (Asteroid(x) for x in self._results)
+
+    def first(self):
+        """"Return the first result as an Asteroid object
+
+        Returns:
+            a single Asteroid object if there is at least 1 result, None
+            otherwise
+        """
+        if not self._results:
+            self.run()
+        if len(self._results) > 0:
+            return Asteroid(self._results[0])
 
     def save_to_file(self, filename):
         """Save the current query results to a file, for use later"""
