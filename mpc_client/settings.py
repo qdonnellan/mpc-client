@@ -3,6 +3,7 @@
 Configuration for the mpc_client; feel free to edit this file to customize
 the client.
 """
+import os
 
 
 # These are the credentials used to authenticate to the mpc web service
@@ -16,4 +17,5 @@ WEB_SERVICE_URL = 'http://mpc.cfa.harvard.edu/ws/search'
 DEFAULT_TIME_FORMAT = 'datetime'
 
 
-STORAGE_DIR = '/home/quentin/mpc_results/'
+HOME_DIR = os.environ.get("HOME", "/")
+STORAGE_DIR = os.path.join(HOME_DIR, 'mpc_results')
