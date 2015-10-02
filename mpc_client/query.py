@@ -41,6 +41,26 @@ class Query(object):
         self._parameters['limit'] = number_of_results
         return self
 
+    def order(self, parameter, desc=False):
+        """Order the results by the parameter given. Results are ascending
+        unless desc=True
+
+        Args:
+            parameter (string): the name of the parameter that should be used
+                to order the result set
+            desc (boolean): True if the results should be in descending order
+
+        Returns:
+            this Query object
+        """
+        if desc:
+            self._parameters['order_by_desc'] = parameter
+            self._parameters.pop('order_by', None)
+        else:
+            self._parameters['order_by'] = parameter
+            self._parameters.pop('order_by_desc', None)
+        return self
+
     def filter(self, **kwargs):
         """Filter the query by adding additional parameters
 
@@ -90,13 +110,18 @@ class Query(object):
         if not self._results:
             self.run()
         with open(filepath, 'w+') as outfile:
-            json.dump(self._results, outfile, indent=4)
+            json.dump(self._results, outfile)
 
     def load_from_file(self, filename):
-        """Load a previously saved results query from a file"""
+        """Load a previously saved results query from a file
+
+        Returns:
+            this Query object
+        """
         filepath = os.path.join(settings.STORAGE_DIR, filename)
         with open(filepath, 'r') as infile:
             self._results = json.load(infile)
+        return self
 
     def _request_data(self):
         """Request data from the web service, return response
