@@ -1,5 +1,5 @@
 """Save a query to a local file for use later"""
-from ..query import Query
+from mpc_client.query import Query
 
 
 q = Query()

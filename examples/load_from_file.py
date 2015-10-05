@@ -1,5 +1,5 @@
 """Load a previously saved query"""
-from ..query import Query
+from mpc_client.query import Query
 
 
 # This expects that 'examples/save_to_file.json' has already run

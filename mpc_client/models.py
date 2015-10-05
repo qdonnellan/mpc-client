@@ -1,4 +1,4 @@
-from .properties import Time, Quantity, BooleanFlag
+from mpc_client.properties import Time, Quantity, BooleanFlag
 
 
 class BaseMpcObject(object):

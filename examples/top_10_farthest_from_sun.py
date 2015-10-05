@@ -1,5 +1,5 @@
 """Return the top 10 asteroids farthest from the Sun"""
-from ..query import Query
+from mpc_client.query import Query
 
 q = Query()
 q.limit(10)

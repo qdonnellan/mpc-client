@@ -1,5 +1,5 @@
 """Get Ceres and print out some of its data"""
-from ..query import Query
+from mpc_client.query import Query
 
 
 

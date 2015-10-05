@@ -3,8 +3,8 @@
 
 
 import requests
-from . import settings
-from .models import Asteroid
+from mpc_client import settings
+from mpc_client.models import Asteroid
 import os
 import json
 
