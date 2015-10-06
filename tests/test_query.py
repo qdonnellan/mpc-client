@@ -17,7 +17,7 @@ class QueryTest(unittest.TestCase):
         self.assertEqual(q._parameters['order_by'], "hello")
 
     def test_order_desc(self):
-        """Adding a descending order paramter should work as expected"""
+        """Adding a descending order parameter should work as expected"""
         q = Query().order('hello', desc=True)
         self.assertEqual(q._parameters['order_by_desc'], "hello")
 
