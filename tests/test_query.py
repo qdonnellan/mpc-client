@@ -1,5 +1,7 @@
 import unittest
 from mpc_client.query import Query
+from utils import local_cassette
+import vcr
 
 
 class QueryTest(unittest.TestCase):
@@ -27,3 +29,11 @@ class QueryTest(unittest.TestCase):
         q = Query().order("something")
         q.order("something_else", desc=True)
         self.assertIsNone(q._parameters.get('order_by', None))
+
+    @vcr.use_cassette(local_cassette('test_query_limit.yml'))
+    def test_limit(self):
+        """A query with a limit filter should return exactly that many results
+        (we assume there are that many to return)"""
+        q = Query().limit(13)
+        q.run()
+        self.assertEqual(len(q._results), 13)
